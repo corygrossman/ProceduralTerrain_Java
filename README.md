@@ -25,7 +25,7 @@ A program that utilizes the perlin noise algorithm to influence the height value
 
 ![alt text](https://github.com/corygrossman/ProceduralTerrain_Java/blob/main/screenshots/stroke.png?raw=true)
 
-<img src="https://github.com/corygrossman/ProceduralTerrain_Java/blob/main/data/terrain2.png" width="100" height="100">
+<img src="https://github.com/corygrossman/ProceduralTerrain_Java/blob/main/data/terrain2.png" width="250" height="250">
 
 ### Turned color on
 
