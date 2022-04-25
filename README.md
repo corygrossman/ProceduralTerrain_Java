@@ -4,12 +4,19 @@ A java implementation of procedural terrain using the perlin noise algorithm
 ## Software Logic
 A program that utilizes the perlin noise algorithm to influence the height values of vertices in a triangle to make a procedurally generated terrain.
 
+
 ## Language
  - Java
 
 ## Frameworks
 - Java Processing (based on openGL)
 - ControlP5
+
+## Installation and Run
+ - download Java Processing from https://processing.org/download
+ - navigate into the Procedural_Terrain folder
+ - open the .pde file
+ - click the run button at the top left ofthe window
 
 ## Screenshots
 
