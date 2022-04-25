@@ -14,7 +14,7 @@ A program that utilizes the perlin noise algorithm to influence the height value
 
 ## Installation and Run
  - download Java Processing from https://processing.org/download
- - navigate into the Procedural_Terrain folder
+ - navigate into the proceduralTerrain folder
  - open the .pde file
  - click the run button at the top left ofthe window
 
