@@ -580,7 +580,6 @@ PImage GeneratePerlinNoise() {
   }
   }
   heightMap.updatePixels();
-  image(heightMap, 68,68);
   
   return heightMap;
 }
