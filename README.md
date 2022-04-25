@@ -46,3 +46,9 @@ A program that utilizes the perlin noise algorithm to influence the height value
 #### Mid-Late Evening
 
 ![alt text](https://github.com/corygrossman/ProceduralTerrain_Java/blob/main/screenshots/highlight.png?raw=true)
+
+### Generate Perlin Noise
+
+#### Creates an image within the program and reads the data realtime
+
+![alt text](https://github.com/corygrossman/ProceduralTerrain_Java/blob/main/screenshots/perlinnoise.png?raw=true)
