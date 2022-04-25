@@ -36,3 +36,13 @@ A program that utilizes the perlin noise algorithm to influence the height value
 ### Smoothed the terrain by averaging height values
 
 ![alt text](https://github.com/corygrossman/ProceduralTerrain_Java/blob/main/screenshots/smooth.png?raw=true)
+
+### Changing Directional Lighting
+
+##### Early Morning
+
+![alt text](https://github.com/corygrossman/ProceduralTerrain_Java/blob/main/screenshots/lowlight.png?raw=true)
+
+#### Mid-Late Evening
+
+![alt text](https://github.com/corygrossman/ProceduralTerrain_Java/blob/main/screenshots/highlight.png?raw=true)
