@@ -10,6 +10,8 @@ int rows = 1;
 int columns = 1;
 float terrain_size = 20.00;
 
+float daytime = -1;
+
 boolean ui_stroke = false;
 boolean ui_color = false;
 
@@ -57,6 +59,11 @@ void setup() {
     .setPosition(10, 60).setSize(300, 30)
     .setFont(createFont("arial", 15))
     .setLabel("Columns");
+    
+    cp5.addSlider("daytime", -1, 1)
+    .setPosition(600, 10).setSize(300, 30)
+    .setFont(createFont("arial", 15))
+    .setLabel("Time of Day");
 
   cp5.addSlider("terrain_size", 20.00, 250.00)
     .setPosition(10, 110).setSize(300, 30)
@@ -105,13 +112,10 @@ void setup() {
 
 void draw() {
   background(50);
-  //float dirY = (mouseY / float(height) - 0.5) * 2;
-  //float dirX = (mouseX / float(width) - 0.5) * 2;
   
-  float dirY = 0.087;
-  float dirX = -0.09;
+  //sets the lighting of the environment
   ambientLight(120, 120, 120);
-  directionalLight(204, 204, 204, -dirX, -dirY, -1);
+  directionalLight(204, 204, 204, daytime, daytime, -1);
 
   perspective(radians(90.0f), width/(float)height, 0.1, 1000);
   camera(cam.posX, cam.posY, cam.posZ, // Where is the camera?
@@ -124,9 +128,12 @@ void draw() {
   }
   drawGrid();
   
+  //calculates and outputs the triangle count in the command line
   int triCount = rows*columns*2;
   textSize(3);
   println("Triangle count: " + triCount);
+  
+  
   camera();
   perspective();
 }
@@ -188,6 +195,7 @@ public class Camera {
     }
   }
 }
+
 //calls function when mouse is dragged
 void mouseDragged() {
   if (!cp5.isMouseOver()) {
@@ -247,7 +255,8 @@ void Run(int r, int c, float size, String file) {
     //draws rows and columns
     //print("generated");
   }
-
+  
+  //adds the vertices to an index based array
   for (int i = 0; i < r; i++) {
     for (int j = 0; j < c; j++) {
       startIndex = i * verticesInARow + j;
@@ -271,9 +280,11 @@ void Generate() {
   update_Rows = rows;
   update_Columns = columns;
   update_Size = terrain_size;
+  
   //resets the grid to the new values
   Run(update_Rows, update_Columns, update_Size, update_File);
   update_File = cp5.get(Textfield.class, "terrain_file").getText();
+  
   //if there is a file to load
   if (update_File != null) {
     update_File = update_File +  ".png";
@@ -292,10 +303,13 @@ void drawTriangles() {
   } else {
     noStroke();
   }
-
+  
+  //gets 3 vertices to make a triangle
   beginShape(TRIANGLE);
+  
   //draws the individual triangles for each vertex
   for (int i = 0; i < triangles.size(); i++) {
+    
     //gets the index that the vertex is at. repeats this until all 3 vertices are recieved
     int vertIndex = triangles.get(i);
     PVector vert = smoothed_VD.get(vertIndex);
@@ -308,8 +322,8 @@ void drawTriangles() {
     color rock = color(135, 135, 135);
     color dirt = color(160, 126, 84);
     color water = color(0, 75, 200);
-
-
+    
+    //lerpcolor interpolates between colors
     if (ui_color) {
       if (relativeHeight >= 0.2 && relativeHeight <= 0.4) {
         float ratio = (relativeHeight - 0.2)/0.2f;
@@ -324,12 +338,14 @@ void drawTriangles() {
         fill(water);
       }
     }
+    
     //adjusts for the height
     vertex (vert.x, height_Mod*-1*vert.y, vert.z);
-
+    
+    //iterates through the next vertex
     i++;
+    
     vertIndex = triangles.get(i);
-    //print(vertIndex);
     vert = smoothed_VD.get(vertIndex);
     relativeHeight = abs(vert.y) * height_Mod / snow_Thresh;
     if (ui_color) {
@@ -346,12 +362,14 @@ void drawTriangles() {
         fill(water);
       }
     }
+    
     //adjusts for the height
     vertex (vert.x, height_Mod*-1*vert.y, vert.z);
 
+    //iterates through the next vertex
     i++;
+    
     vertIndex = triangles.get(i);
-    //print(vertIndex);
     vert = smoothed_VD.get(vertIndex);
     relativeHeight = abs(vert.y) * height_Mod / snow_Thresh;
     if (ui_color) {
@@ -368,9 +386,9 @@ void drawTriangles() {
         fill(water);
       }
     }
+    
     //adjusts for the height
     vertex (vert.x, height_Mod*-1*vert.y, vert.z);
-    //println();
   }
   endShape();
 }
@@ -380,9 +398,11 @@ void ApplyImageHeight(int r, int c) {
   float imgW = heightMap.width;
   float imgH = heightMap.height;
   float heightFromColor;
+  
   //println(imgW);
   //print(", ");
   //print(imgH);
+  
   int vertex_index;
   for (int i = 0; i <= r; i++) {
     for (int j = 0; j <= c; j++) {
@@ -391,6 +411,7 @@ void ApplyImageHeight(int r, int c) {
       yIndex = int(map(i, 0, r+1, 0, imgH));
 
       color tempCol = heightMap.get(xIndex, yIndex);
+      //reads the red pixel data from the texture image and maps it from 0-255 to 0-1
       heightFromColor = map(red(tempCol), 0, 255, 0, 1.0f);
 
       vertex_index = i * (c + 1) + j;
@@ -435,6 +456,8 @@ void drawGrid() {
   popMatrix();
 }
 
+//smooths by averaging out each vertex based on its neighbors height value
+//have to adjust program by keeping an original array of data
 void SmoothVert() {
   //function called
   println("smoothVert function called");
